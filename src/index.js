@@ -27,7 +27,7 @@ form.addEventListener('submit', async (event) => {
     console.log(photos.hits);
     console.log(trimInput);
 
-    } catch (Error) {
+    } catch (error) {
         console.log('ups');
     };
 })
