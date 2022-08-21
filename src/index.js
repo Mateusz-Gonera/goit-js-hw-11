@@ -23,12 +23,19 @@ form.addEventListener('submit', async event => {
     let page = 1;
     const varPhotos = await fetchPhotos(trimInput, page);
     const photosArr = varPhotos.hits;
-
-    if (varPhotos.hits.length === 0) {
+    if (trimInput === "") return;
+    if (photosArr.length === 0) {
       throw new Error();
     }
+    console.log(photosArr[0].webformatURL);
+    console.log(photosArr[0].largeImageURL);
+    console.log(photosArr[0].tags);
+    console.log(photosArr[0].likes);
+    console.log(photosArr[0].views);
+    console.log(photosArr[0].comments);
+    console.log(photosArr[0].downloads);
+    
     console.log(photosArr);
-    console.log(trimInput);
   } catch (error) {
     console.log('ups');
   }
