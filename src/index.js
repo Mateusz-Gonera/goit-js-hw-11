@@ -22,7 +22,7 @@ const renderGallery = (dataArray) => {
   let markup = dataArray
     .map(data => {
       return `<div class="photo-card">
-  <a href="${data.largeImageURL}"><img width="400" height="200" src="${data.webformatURL}" alt="${data.tags}" loading="lazy" title="" /></a>
+  <a href="${data.largeImageURL}"><img src="${data.webformatURL}" alt="${data.tags}" loading="lazy" title="" /></a>
   <div class="info">
     <p class="info-item">
       <b>Likes</b>
