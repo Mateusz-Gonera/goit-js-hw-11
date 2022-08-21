@@ -13,3 +13,17 @@ input {
 button {
     font-size: 22px;
 }
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.info-item {
+    display: inline;
+}
+
+.span-item {
+    display: block;
+}
+
