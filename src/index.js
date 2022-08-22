@@ -11,6 +11,7 @@ const gallery = document.querySelector('.gallery');
 
 const API_KEY = '29396920-d4426056c3f6851287cd3980f';
 const perPage = 40;
+let page = 1;
 searchBtn.disabled = false;
 
 
@@ -86,7 +87,6 @@ form.addEventListener('submit', async event => {
     const { searchBtn, searchQuery } = event.currentTarget;
     let trimInput = searchQuery.value.trim();
     localStorage.setItem('inputValue', `${trimInput}`)
-    let page = 1;
     const varPhotos = await fetchPhotos(trimInput, page);
     const photosArr = varPhotos.hits;
     const total = varPhotos.totalHits;
@@ -114,16 +114,14 @@ form.addEventListener('submit', async event => {
 });
 
 window.addEventListener("scroll", debounce(async event => {
-  try {
-    let page = 1;
-  page += 1;
-    
+  try {    
   let trimInput = localStorage.getItem('inputValue');
   const varPhotos = await fetchPhotos(trimInput, page);
     const photosArr = varPhotos.hits;
-  if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+      page += 1;
     renderNextPhotos(photosArr);
-    const lightbox2 = new simpleLightbox('.gallery a');
+    const lightbox = new simpleLightbox('.gallery a');
     console.log(`${trimInput}`)
     }
   } catch (error) {
