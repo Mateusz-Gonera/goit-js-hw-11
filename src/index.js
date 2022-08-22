@@ -1,6 +1,6 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import debounce from "lodash.debounce";
+import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 import simpleLightbox from 'simplelightbox';
 
@@ -11,17 +11,19 @@ const gallery = document.querySelector('.gallery');
 
 const API_KEY = '29396920-d4426056c3f6851287cd3980f';
 const perPage = 40;
-let page = 1;
 searchBtn.disabled = false;
-
+let page = 1;
+const lightbox = new simpleLightbox('.gallery a');
 
 const fetchPhotos = async (search, pagenr) => {
-    const response = await fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${search}&image_type=photo&orientation=horizontal&safesearch=true&pretty=true&per_page=${perPage}&page=${pagenr}`);
+  const response = await fetch(
+    `https://pixabay.com/api/?key=${API_KEY}&q=${search}&image_type=photo&orientation=horizontal&safesearch=true&pretty=true&per_page=${perPage}&page=${pagenr}`
+  );
   const photos = await response.json();
   return photos;
 };
 
-const renderGallery = (dataArray) => {
+const renderGallery = dataArray => {
   let markup = dataArray
     .map(data => {
       return `<div class="photo-card">
@@ -44,14 +46,14 @@ const renderGallery = (dataArray) => {
       <span class="span-item">${data.downloads}</span>
     </p>
   </div>
-</div>`
+</div>`;
     })
-    .join("");
+    .join('');
 
   gallery.innerHTML = markup;
 };
 
-const renderNextPhotos = (dataArray) => {
+const renderNextPhotos = dataArray => {
   let markup2 = dataArray
     .map(data => {
       return `<div class="photo-card">
@@ -74,10 +76,10 @@ const renderNextPhotos = (dataArray) => {
       <span class="span-item">${data.downloads}</span>
     </p>
   </div>
-</div>`
+</div>`;
     })
-    .join("");
-  
+    .join('');
+
   gallery.insertAdjacentHTML('beforeend', markup2);
 };
 
@@ -85,18 +87,19 @@ form.addEventListener('submit', async event => {
   try {
     event.preventDefault();
     const { searchBtn, searchQuery } = event.currentTarget;
+    page = 1;
     let trimInput = searchQuery.value.trim();
-    localStorage.setItem('inputValue', `${trimInput}`)
+    localStorage.setItem('inputValue', `${trimInput}`);
     const varPhotos = await fetchPhotos(trimInput, page);
     const photosArr = varPhotos.hits;
     const total = varPhotos.totalHits;
-    if (trimInput === "") return;
-    Notiflix.Notify.success(`Hooray! We found ${total} images.`)
+    if (trimInput === '') return;
+    Notiflix.Notify.success(`Hooray! We found ${total} images.`);
     if (photosArr.length === 0) {
       throw new Error();
     }
     renderGallery(photosArr);
-    const lightbox = new simpleLightbox('.gallery a');
+
     lightbox.refresh();
     console.log(photosArr[0].webformatURL);
     console.log(photosArr[0].largeImageURL);
@@ -106,25 +109,34 @@ form.addEventListener('submit', async event => {
     console.log(photosArr[0].comments);
     console.log(photosArr[0].downloads);
 
-    console.log(varPhotos.totalHits);
+    console.log(page);
   } catch (error) {
     console.log(error.message);
-    Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+    Notiflix.Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
   }
 });
 
-window.addEventListener("scroll", debounce(async event => {
-  try {    
-  let trimInput = localStorage.getItem('inputValue');
-  const varPhotos = await fetchPhotos(trimInput, page);
-    const photosArr = varPhotos.hits;
-    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
-      page += 1;
-    renderNextPhotos(photosArr);
-    const lightbox = new simpleLightbox('.gallery a');
-    console.log(`${trimInput}`)
+window.addEventListener(
+  'scroll',
+  debounce(async event => {
+    try {
+      if (
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight
+      ) {
+        page += 1;
+        let trimInput = localStorage.getItem('inputValue');
+        const varPhotos = await fetchPhotos(trimInput, page);
+        const photosArr = varPhotos.hits;
+
+        renderNextPhotos(photosArr);
+        lightbox.refresh();
+        console.log(`${page}`);
+      }
+    } catch (error) {
+      console.log(error.message);
     }
-  } catch (error) {
-    console.log(error.message);
-  }
-}, 100))
+  }, 100)
+);
