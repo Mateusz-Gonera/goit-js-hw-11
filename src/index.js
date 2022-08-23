@@ -94,23 +94,16 @@ form.addEventListener('submit', async event => {
     const photosArr = varPhotos.hits;
     const total = varPhotos.totalHits;
     if (trimInput === '') return;
-    Notiflix.Notify.success(`Hooray! We found ${total} images.`);
+    if (total > 0) {
+      Notiflix.Notify.success(`Hooray! We found ${total} images.`);
+    }
     if (photosArr.length === 0) {
       throw new Error();
     }
     renderGallery(photosArr);
-
     lightbox.refresh();
-    console.log(photosArr[0].webformatURL);
-    console.log(photosArr[0].largeImageURL);
-    console.log(photosArr[0].tags);
-    console.log(photosArr[0].likes);
-    console.log(photosArr[0].views);
-    console.log(photosArr[0].comments);
-    console.log(photosArr[0].downloads);
-
-    console.log(page);
   } catch (error) {
+    gallery.innerHTML = '';
     console.log(error.message);
     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
@@ -123,7 +116,7 @@ window.addEventListener(
   debounce(async event => {
     try {
       if (
-        window.scrollY + window.innerHeight >=
+        window.scrollY + 0.5 + window.innerHeight >=
         document.documentElement.scrollHeight
       ) {
         page += 1;
@@ -133,7 +126,6 @@ window.addEventListener(
 
         renderNextPhotos(photosArr);
         lightbox.refresh();
-        console.log(`${page}`);
       }
     } catch (error) {
       console.log(error.message);
