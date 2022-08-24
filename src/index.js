@@ -134,7 +134,7 @@ window.addEventListener(
           .querySelector('.gallery')
           .firstElementChild.getBoundingClientRect();
         window.scrollBy({
-          top: cardHeight * 1.2,
+          top: cardHeight * 1.5,
           behavior: 'smooth',
         });
       }
