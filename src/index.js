@@ -116,6 +116,9 @@ window.addEventListener(
   'scroll',
   debounce(async event => {
     try {
+      if (window.innerHeight === document.documentElement.scrollHeight) {
+        return;
+      }
       if (
         window.scrollY + 0.5 + window.innerHeight >=
         document.documentElement.scrollHeight
