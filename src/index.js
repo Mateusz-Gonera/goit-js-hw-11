@@ -11,7 +11,6 @@ const gallery = document.querySelector('.gallery');
 
 const API_KEY = '29396920-d4426056c3f6851287cd3980f';
 const perPage = 40;
-searchBtn.disabled = false;
 let page = 1;
 const lightbox = new simpleLightbox('.gallery a');
 
@@ -107,7 +106,6 @@ form.addEventListener('submit', async event => {
     lightbox.refresh();
   } catch (error) {
     gallery.innerHTML = '';
-    console.log(error.message);
     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
@@ -129,9 +127,14 @@ window.addEventListener(
 
         renderNextPhotos(photosArr);
         lightbox.refresh();
+        const { height: cardHeight } = document
+          .querySelector('.gallery')
+          .firstElementChild.getBoundingClientRect();
+        window.scrollBy({
+          top: cardHeight * 1.2,
+          behavior: 'smooth',
+        });
       }
-    } catch (error) {
-      console.log(error.message);
-    }
+    } catch (error) {}
   }, 100)
 );
