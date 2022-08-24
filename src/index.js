@@ -89,11 +89,14 @@ form.addEventListener('submit', async event => {
     const { searchBtn, searchQuery } = event.currentTarget;
     page = 1;
     let trimInput = searchQuery.value.trim();
+    if (trimInput === '') {
+      return;
+    }
     localStorage.setItem('inputValue', `${trimInput}`);
+    gallery.innerHTML = '';
     const varPhotos = await fetchPhotos(trimInput, page);
     const photosArr = varPhotos.hits;
     const total = varPhotos.totalHits;
-    if (trimInput === '') return;
     if (total > 0) {
       Notiflix.Notify.success(`Hooray! We found ${total} images.`);
     }

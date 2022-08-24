@@ -1,9 +1,15 @@
 .search-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 15px;
   background-color: #085ecc;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0;
 }
 
 input {
@@ -39,6 +45,8 @@ img {
 }
 
 .gallery {
+  position: absolute;
+  top: 60px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -62,7 +70,7 @@ img {
   align-items: center;
   border: 1px solid rgba(27, 31, 35, 0.15);
   border-top: none;
-  border-radius: 0 0 2px 2px;
+  border-radius: 0 0 4px 4px;
   box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0;
 }
 
